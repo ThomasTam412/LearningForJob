@@ -44,3 +44,31 @@ body {
 .btn:hover {
     background-color: darkred;
 }
+
+table {
+    border-collapse: collapse; /* 讓相鄰的邊框合併成一條線*/
+    margin: 0 auto;
+}
+
+th,td {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+th {
+    background-color: #007BFF;
+    color: white;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.page-title {
+    text-align: center;
+}
+/* 
+#timetable {
+    text-align: center;
+}
+*/
