@@ -72,3 +72,96 @@ tbody tr:nth-child(even) {
     text-align: center;
 }
 */
+
+/* ===== 表單樣式 ===== */
+/* 表單外框 */
+.form-container {
+    background-color: white;
+    width: 400px;
+    margin: 50px auto; /* 上下 50px,左右置中 */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* 每個欄位組 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* 讓 label 獨立佔一行 */
+.form-group label {
+    display: block;         /* 獨立一行 */
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* 輸入框統一樣式 */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+/* 輸入框被點選時的樣式 */
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;          /* 移除預設的藍色外框 */
+    border-color: #007BFF;
+}
+
+/* 性別 radio 區域 */
+.radio-group {
+    display: flex;          /* 讓裡面的元素水平排列。 */
+    gap: 15px;              /* 元素之間的距離。 */
+    align-items: center;    /* 垂直置中 */
+}
+
+/* radio 旁邊的 label 不要 block */
+.radio-group label {
+    display: inline;
+    font-weight: normal;
+    margin-bottom: 0;
+}
+
+/* 按鈕區域 */
+.form-action {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end; /* 按鈕靠右 */
+}
+
+/* 提交按鈕 */
+.btn-submit {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer; /* 滑鼠變成手指*/
+}
+.btn-submit:hover {
+    background-color: #0056b3;
+}
+
+/* 重設按鈕 */
+.btn-reset {
+    background-color: #ccc;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.btn-reset:hover {
+    background-color: #999;
+}
