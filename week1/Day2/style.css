@@ -1,0 +1,41 @@
+/* 讓整個網頁背景變淺灰色 */
+body {
+    background-color: #f4f4f4;
+}
+
+/* 設計卡片樣式 */
+.card {
+    background-color: white; /* 卡片底色設為白色 */
+    width: 500px; /* 卡片寬度設為500px */
+    margin: 50px; /* 外邊距: 離其他元素 50 像素 */
+    padding: 10px; /* 內邊距: 內容離邊 20 像素 */
+    border: 2px solid #ccc; /* 邊框: 2像素 實線 灰色 */
+    border-radius: 10px; /* 圓角: 讓邊角變圓 */
+    box-shadow: 0 4px 8px rgba(0,0,0,1); /* 陰影 */
+}
+
+/* 修改名字的顏色和大小 */
+.name {
+    color:  blue;
+    font-size: 28px;
+    margin-top: 0; /* 去掉名字上方的預設空間 */
+    margin-bottom: 0; /* 名字與職稱間距 */
+}
+
+/* 修改職稱的顏色 */
+.job-title {
+    color: #888888;
+    font-size: 12px;
+    margin-top: 10px; /* 職稱與名字間距 */
+}
+
+/* 設計按鈕外觀 */
+.btn {
+    display: inline-block; /* 讓連接可以設定寬高和間距 */
+    background-color: red; /* 背景色 */
+    color: white; /* 白色字體 */
+    padding: 10px 15px; /* 上下 10px，左右 15px 的內邊距 */
+    text-decoration: none; /* 去掉超接結預設的底線 */
+    border-radius: 5px; /* 小圓角 */
+    margin-top: 15px; /* 離上面的興趣清單 */
+}
