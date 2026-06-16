@@ -1,17 +1,18 @@
 /* 讓整個網頁背景變淺灰色 */
 body {
     background-color: #f4f4f4;
+    font-family: "Microsoft JhengHei", Arial, sans-serif;
 }
 
 /* 設計卡片樣式 */
 .card {
     background-color: white; /* 卡片底色設為白色 */
     width: 500px; /* 卡片寬度設為500px */
-    margin: 50px; /* 外邊距: 離其他元素 50 像素 */
-    padding: 10px; /* 內邊距: 內容離邊 20 像素 */
+    margin: 50px auto; /* 外邊距: 離其他元素 50 像素 */
+    padding: 10px; /* 內邊距: 內容離邊 10 像素 */
     border: 2px solid #ccc; /* 邊框: 2像素 實線 灰色 */
     border-radius: 10px; /* 圓角: 讓邊角變圓 */
-    box-shadow: 0 4px 8px rgba(0,0,0,1); /* 陰影 */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* 陰影 */
 }
 
 /* 修改名字的顏色和大小 */
@@ -30,7 +31,7 @@ body {
 }
 
 /* 設計按鈕外觀 */
-.btn {
+.btn:hover {
     display: inline-block; /* 讓連接可以設定寬高和間距 */
     background-color: red; /* 背景色 */
     color: white; /* 白色字體 */
