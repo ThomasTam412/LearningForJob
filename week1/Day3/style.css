@@ -1,0 +1,54 @@
+/* 重置瀏覽器預設樣式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* 防止 width 和 height 爆版 */
+}
+
+/* 導航欄整體 */
+.navbar {
+    display: flex; /* 啟動 Flexbox */
+    justify-content: space-between; /* 兩端對齊: Logo 在左，選單在右 */
+    align-items: center; /* 垂直置中 */
+    background-color: #333; /* 深灰背景 */
+    padding: 10px 30px; /* 上下 10px，左右 30px */
+}
+
+/* Logo */
+.nav-logo {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.nav-menu {
+    display: flex; /* 啟動 Flexbox，讓 li 水平排列 */
+    gap: 30px; /* 每個選項之間距離 30px */
+    list-style: none; /* 去掉預設的圓點 */
+}
+
+/* 選單裡的連結 */
+.nav-menu a {
+    color: white;
+    text-decoration: none; /* 移除連結底線 */
+    font-size: 16px;
+}
+
+.nav-menu a:hover {
+    color: #00BFFF; /* 變成天藍色 */
+}
+
+/* 內容區域 */
+.content {
+    padding: 50px;
+}
+
+.content h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.content p {
+    color: #666;
+    line-height: 1.6;
+}
