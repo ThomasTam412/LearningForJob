@@ -167,3 +167,12 @@ https://github.com/ThomasTam412/LearningForJob
 :hover 的概念還需要多練習
 box-sizing 的觀念要熟記，否則容易爆版
 Flexbox 還只是基礎，需要更多練習
+
+## 明日計劃
+### 明天準備學習：
+- Flexbox 進階（做出真實網站的導航欄、商品列表）
+- 或 CSS Grid 與響應式設計
+
+### 預計練習：
+- 做一個導航欄
+- 做一個商品卡片列表（多個卡片並排）
