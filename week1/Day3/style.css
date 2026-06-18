@@ -52,3 +52,12 @@
     color: #666;
     line-height: 1.6;
 }
+
+/* ===== 商品列表 ===== */
+/* 商品容器 */
+.products-container {
+    display: flex; /* 啟動 Flexbox */
+    flex-wrap: wrap; /* 超過寬度自動換行 */
+    gap: 20px;
+    margin-top: 30px;
+}
