@@ -1,0 +1,45 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.card {
+    width: 400px;
+    margin: 10px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(to bottom, #000080 16%, #FF8904 98%)
+}
+
+.icon {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 999em;
+    object-fit: cover;
+}
+
+.information {
+    margin: 10px;
+}
+
+.name {
+    color: white;
+}
+
+.job {
+    color: grey;
+    
+}
+
+.technology {
+    font-weight: bolder;
+    color: white;
+}
+
+.btn {
+    display: block;
+    margin: 10px auto;   
+}
+
