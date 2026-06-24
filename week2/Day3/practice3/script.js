@@ -1,24 +1,25 @@
 let scores = [85, 72, 90, 45, 67, 88, 92, 55, 78, 60];
 let total = scores.length;
-let maxScore = 0;
-let minScore = 100;
+let maxScore = scores[0]; // 不要假設數據範圍，用數據本身當基準
+let minScore = scores[0];
 let sum = 0;
-let level = "";
+
 let pass = 0;
 let fail = 0;
 
 for (let i = 0; i < total; i++) {
+    let level = ""; // 避免值殘留
     if (scores[i] > maxScore) maxScore = scores[i];
     if (scores[i] < minScore) minScore = scores[i];
     if(scores[i] < 60) {
         level = "F";
-        fail += 1;
+        fail ++; // 比 += 更簡潔
     }
     else {
         if (scores[i] >= 90) level = "A";
         else if (scores[i] >= 80) level = "B";
         else level = "C";
-        pass += 1;
+        pass ++;
     }
     console.log(`學生 ${i + 1}: ${scores[i]}，等級 ${level}`)
     sum += scores[i];
