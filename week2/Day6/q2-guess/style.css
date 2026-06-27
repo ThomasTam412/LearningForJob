@@ -1,0 +1,92 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.container {
+    background-color: #DCE4EC;
+    width: 400px;
+    height: 500px;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 6px 6px 0px 2px rgba(0, 0, 0, 0.25);
+    text-align: center;
+}
+
+.container h1 {
+    text-align: center;
+    color: #1A365D;
+}
+
+.screen {
+    display: grid;
+    grid-template-rows: 300px 20px;
+    place-items: center;
+    background-color: white;
+    margin: 10px auto;
+    border-radius: 20px;
+    width: 300px;
+    height: 320px; 
+}
+
+.screenContent {
+    font-size: 50px;
+}
+
+.hint {
+    font-size: 20px;
+    color: #8338EC;
+}
+
+.opratingSpace {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.frequencyContent {
+    font-size: 20px;
+}
+
+input[type="number"] {
+  width: 140px;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid #CBD5E1; 
+  border-radius: 8px;
+  font-size: 16px;
+  text-align: center;
+  color: #1A365D;
+  background-color: #FFFFFF;
+  transition: all 0.2s ease; /* 讓發光過渡更平滑 */
+}
+
+input[type="number"]:focus {
+  outline: none;
+  border-color: #4A90E2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+}
+
+.btn {
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    padding: 5px;
+    background-color: #75ccf2;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #448de0;
+}
+
+.restartBtn {margin: 10px;}
+
