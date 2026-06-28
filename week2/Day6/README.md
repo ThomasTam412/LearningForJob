@@ -83,3 +83,35 @@ Day7 本來就是彈性日
 
 先別自我懷疑，去 commit 然後好好睡 ✅
 明天見！
+📘 Q3 學習總結
+🎯 解鎖技能
+createElement — 用 JS 動態建立 HTML 元素
+appendChild — 把元素塞進父元素
+陣列方法 — .push() 新增、.splice() 刪除
+「資料驅動 UI」思維 — 改資料 → 重新渲染
+render() 模式 — 清空 + 重畫
+動態事件綁定 — 迴圈內 addEventListener
+⚠ 今天踩過的坑
+坑	教訓
+textContent 取代所有子元素	知道它是「設定」不是「追加」
+input.value = "" 放錯位置	想清楚「該在哪個事件時做」
+沒做空輸入驗證	看完需求要逐項確認
+🧠 你 Q3 問的兩個超棒問題
+Q：「deleteBtn 是不是全域變數？」
+→ 你開始思考變數作用域，不是只想著「能動就好」
+
+Q：「render 裡呼叫 render 不是遞迴嗎？」
+→ 你抓到「定義 vs 執行」這個 JS 核心觀念
+
+這兩個問題反映你不是死背 code，是真的在理解。 這比寫對更重要 ⭐
+
+📝 GitHub Commit Message 建議
+text
+
+week2-day6-q3: Todo List - 動態 DOM + 資料驅動 UI
+
+- createElement / appendChild 動態建立元素
+- 陣列 push / splice 管理資料
+- render() 重新渲染模式（資料變 → 畫面重畫）
+- 空輸入驗證（.trim()）
+- UI：綠色強調條 + 卡片陰影 + Design System 一致性
