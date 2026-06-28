@@ -1,0 +1,176 @@
+/* ==========================================================================
+   1. 基礎重置與背景排版（採用舒適的淺灰冷藍調，放大空間感）
+   ========================================================================== */
+body {
+    background-color: #E2E8F0; /* 冰晶亮藍灰大背景 */
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+    display: grid;
+    place-items: center;
+    min-height: 100vh; /* 讓整張卡片在螢幕正中央垂直置中 */
+}
+
+/* 最外層包裹區塊 */
+.content {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* ==========================================================================
+   2. 主卡片容器（白色精緻漂浮視窗）
+   ========================================================================== */
+.container {
+    background-color: #FFFFFF; /* 純白大卡片 */
+    border-radius: 16px;       /* 現代感大圓角 */
+    padding: 30px 24px;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08); /* 柔和的高級感陰影 */
+}
+
+/* 主標題 */
+.title {
+    color: #0F172A; /* 深頁墨藍 */
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 24px;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+/* ==========================================================================
+   3. 輸入框與新增按鈕區排版 (使用 Flex 完美對齊與等高)
+   ========================================================================== */
+.inputSpace {
+    display: flex;
+    gap: 8px; /* 輸入框與按鈕的精準間距 */
+    margin-bottom: 24px;
+}
+
+/* 輸入框樣式 */
+#todoInput {
+    flex: 1; /* 自動撐滿剩餘空間 */
+    height: 42px;
+    padding: 0 14px;
+    border: 1px solid #CBD5E1; /* 燕麥冷灰細邊框 */
+    border-radius: 8px;
+    font-size: 15px;
+    color: #334155;
+    background-color: #F8FAFC; /* 微微帶灰的輸入框底色，更有層次 */
+    box-sizing: border-box;
+    transition: all 0.25s ease;
+}
+
+/* 輸入框被點擊輸入時的發光反饋 (:focus) */
+#todoInput:focus {
+    outline: none;
+    background-color: #FFFFFF;
+    border-color: #10B981; /* 亮起活力薄荷綠邊框 */
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15); /* 柔和綠色光暈 */
+}
+
+/* 新增按鈕樣式 */
+.btn {
+    height: 42px;
+    padding: 0 20px;
+    background-color: #10B981; /* 活力薄荷綠 */
+    color: #FFFFFF;            /* 純白文字 */
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+/* 按鈕懸停與點擊動態 */
+.btn:hover {
+    background-color: #059669; /* 懸停時變深綠 */
+}
+.btn:active {
+    transform: scale(0.97); /* 點擊時微微縮小，極具點擊紮實感 */
+}
+
+/* ==========================================================================
+   4. 待辦事項清單列表區塊
+   ========================================================================== */
+.listSpace {
+    max-height: 280px; /* 超過高度時自動出現捲軸，不破壞卡片外型 */
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+/* 清除 ul 預設樣式 */
+#todoList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* 每一個任務項目的外殼 (您用 JS 動態產生的 <li>) */
+#todoList li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 關鍵：文字靠左貼，按鈕靠右貼 */
+    padding: 10px 14px;
+    background-color: #F8FAFC;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 4px solid #10B981; /* 任務左側有薄荷綠的裝飾條 */
+    transition: all 0.2s ease;
+}
+
+#todoList li:hover {
+    background-color: #F1F5F9; /* 游標滑過任務時微微變深 */
+}
+
+/* 任務內部的文字 (您用 JS 產生的 <span>) */
+#todoList li span {
+    font-size: 15px;
+    color: #334155;
+    word-break: break-all; /* 防止超長文字爆框 */
+    margin-right: 12px;
+}
+
+/* 任務內部的刪除按鈕 (您用 JS 產生的 <button>) */
+#todoList li button {
+    flex-shrink: 0; /* 防止按鈕被超長文字擠壓變形 */
+    background-color: transparent;
+    border: none;
+    color: #94A3B8; /* 平時是優雅的淡灰色 */
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+/* 刪除按鈕懸停時變成柔和的警告紅 */
+#todoList li button:hover {
+    color: #EF4444; 
+    background-color: #FEE2E2; /* 淡紅色背景 */
+}
+
+/* ==========================================================================
+   5. 底部統計字樣與捲軸美化
+   ========================================================================== */
+#count {
+    color: #64748B; /* 鋼鐵冷深灰 */
+    font-size: 13px;
+    margin: 0;
+    text-align: right;
+    font-weight: 500;
+}
+
+/* 美化清單滾動條 (Scrollbar) */
+.listSpace::-webkit-scrollbar {
+    width: 6px;
+}
+.listSpace::-webkit-scrollbar-thumb {
+    background-color: #CBD5E1;
+    border-radius: 3px;
+}
