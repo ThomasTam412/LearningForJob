@@ -1,0 +1,117 @@
+/* 1. 全域重設與精緻背景 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+}
+
+body {
+    background-color: #f4f7f9;
+    color: #333;
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+/* 2. 按鈕樣式（含停用狀態） */
+#loadBtn {
+    display: block;
+    margin: 0 auto 40px auto;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 50px; /* 膠囊狀按鈕 */
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
+    transition: all 0.2s ease;
+}
+
+#loadBtn:hover:not(:disabled) {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+}
+
+#loadBtn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+/* 按鈕點擊後（載入中）的樣式 */
+#loadBtn:disabled {
+    background-color: #bdc3c7;
+    color: #7f8c8d;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* 3. 網格容器佈局 */
+#result {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    justify-content: center;
+}
+
+/* 4. 個人檔案卡片樣式 */
+.card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eef2f5;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+    color: #2c3e50;
+    margin-bottom: 12px;
+    font-size: 18px;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 8px;
+}
+
+.card p {
+    color: #666;
+    font-size: 14px;
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* 圖示與文字的間距 */
+}
+
+/* 5. 錯誤訊息與載入中樣式 */
+.error-msg {
+    grid-column: 1 / -1; /* 橫跨整行 */
+    text-align: center;
+    color: #e74c3c;
+    background-color: #fde8e7;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+/* 讓基本文字「載入中...」置中 */
+#result:has(> :not(.card)) {
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    color: #7f8c8d;
+    font-weight: 500;
+}
