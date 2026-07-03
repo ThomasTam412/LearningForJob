@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+    <head>
+        <meta charset="UTF-8">
+        <title>Tab 分頁練習</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <div class="tabs">
+            <button class="tab active" data-tab="1">商品介紹</button>
+            <button class="tab" data-tab="2">規格</button>
+            <button class="tab" data-tab="3">評論</button>
+        </div>
+
+        <div class="contents">
+            <div class="content active" data-content="1">
+                <p>這是商品介紹的內容...</p>
+            </div>
+            <div class="content" data-content="2">
+                <p>這是規格的內容...</p>
+            </div>
+             <div class="content" data-content="3">
+                <p>這是評論內容...</p>
+             </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="script.js"></script>
+    </body>
+</html>

@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tab {
+    padding: 10px 20px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.tab.active {
+    border-bottom: 3px solid blue;
+    font-weight: bold;
+}
+
+.contents {
+    position: relative;
+    min-height: 100px;
+}
+
+.content {
+    position: absolute; /* 疊堆一齊 */
+    top: 0;
+    left: 0;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s, visibility 0.4s;
+}
+
+.content.active {
+    opacity: 1;
+    visibility: visible;
+}
