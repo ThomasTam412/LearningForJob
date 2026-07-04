@@ -1,0 +1,321 @@
+/* ==========================================
+   1. 全域重設與基礎樣式 (不影響邏輯)
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f8fafc;
+    color: #334155;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    line-height: 1.6;
+    padding: 40px 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+h1 {
+    font-size: 24px;
+    color: #1e293b;
+    margin-bottom: 25px;
+    text-align: center;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 15px;
+}
+
+/* ==========================================
+   2. AJAX 產品詳情區塊 (美化動態產生的內容)
+   ========================================== */
+#product {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 40px;
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+/* 當還在「載入中...」或失敗時的樣式 */
+#product > p {
+    width: 100%;
+    text-align: center;
+    color: #64748b;
+    font-weight: 500;
+}
+
+#product img {
+    width: 200px;
+    height: 200px;
+    object-fit: contain; /* 確保商品圖不變形 */
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+#product .info-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+}
+
+#product h2 {
+    font-size: 20px;
+    color: #0f172a;
+    margin-bottom: 8px;
+}
+
+#product p {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+/* 價格特別突出 */
+#product p:nth-of-type(2) {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ef4444; 
+    margin: 10px 0;
+}
+
+#cartBtn {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    align-self: flex-start;
+    transition: background 0.2s;
+}
+
+#cartBtn:hover {
+    background-color: #1d4ed8;
+}
+
+/* ==========================================
+   3. 分頁標籤樣式 (保留 display: flex 與 active 邏輯)
+   ========================================== */
+.tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 2px solid #e2e8f0;
+    margin-bottom: 15px;
+}
+
+.tab {
+    padding: 12px 30px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    color: #64748b;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent; /* 預留底部邊框位置防止抖動 */
+    margin-bottom: -2px; /* 與父層邊框重疊 */
+}
+
+.tab:hover {
+    color: #2563eb;
+}
+
+.tab.active {
+    border-bottom: 3px solid #2563eb; /* 改為現代藍色 */
+    font-weight: bold;
+    color: #2563eb;
+}
+
+/* 保留原本的 position 絕對定位邏輯，調整固定高度與間距 */
+.contents {
+    position: relative;
+    height: 160px; 
+    margin-bottom: 40px;
+}
+
+.content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s, visibility 0.4s;
+    background: #ffffff;
+    font-size: 15px;
+    color: #475569;
+}
+
+.content.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ==========================================
+   4. 摺疊面板樣式 (保留 display: none 邏輯)
+   ========================================== */
+.accordion {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 30px;
+}
+
+.accordion > p {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1e293b;
+    margin-bottom: 15px;
+}
+
+.accordion .item {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.question {
+    cursor: pointer;
+    padding: 15px 20px;
+    background: #f8fafc;
+    font-weight: 600;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s;
+}
+
+.question:hover {
+    background: #f1f5f9;
+}
+
+.arrow {
+    font-size: 12px;
+    color: #94a3b8;
+    transition: transform 0.2s;
+}
+
+/* 保留 display: none 邏輯，僅美化內距與背景 */
+.answer {
+    display: none; 
+    padding: 15px 20px;
+    background: #ffffff;
+    color: #64748b;
+    border-top: 1px solid #e2e8f0;
+    font-size: 14px;
+}
+
+/* ==========================================
+   5. 彈出視窗樣式 (保留不變的動畫控制邏輯)
+   ========================================== */
+.modal-overlay {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    opacity: 0; 
+    visibility: hidden; 
+    transition: opacity 0.3s, visibility 0.3s; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.6); /* 使用更深、帶質感的遮罩色 */
+    backdrop-filter: blur(4px); /* 增加背景模糊，極具現代感 */
+    z-index: 9999;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 放大尺寸並重排內部佈局，告別原本死板的 200x200 方塊 */
+.modal-box {
+    background-color: white;
+    border-radius: 16px;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    color: #475569;
+}
+
+/* 提示勾勾 */
+.modal-box p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #10b981;
+    margin-top: 10px;
+}
+
+/* 數字突出顯示 */
+.modal-box span {
+    font-weight: bold;
+    color: #2563eb;
+    font-size: 18px;
+    margin: 0 4px;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #f1f5f9;
+    border: none;
+    color: #94a3b8;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.modal-close:hover {
+    background: #e2e8f0;
+    color: #64748b;
+}
+
+.modal-ok {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    width: 100%;
+    transition: background 0.2s;
+}
+
+.modal-ok:hover {
+    background: #059669;
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+    <head>
+        <meta charset="UTF-8">
+        <title>產品詳情頁</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="modal-overlay">
+            <div class="modal-box">
+                <button class="modal-close">x</button>
+                <p>✅ 加入成功！</p>
+                你已加入 <span>1</span> 個商品到購物車
+                <button class="modal-ok">繼續購物</button>
+            </div>
+        </div>
+        <div class="container">
+            <h1>📱 產品詳情頁</h1>
+            <div id="product">
+                <p>載入中...</p>
+            </div>
+            
+            <div class="tabs">
+                <button class="tab active" data-tab="1">介紹</button>
+                <button class="tab" data-tab="2">規格</button>
+                <button class="tab" data-tab="3">評論</button>
+            </div>
+            <div class="contents">
+                <div class="content active" data-content="1">
+                    <p>Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday</p>
+                    <p>這款背包是您日常使用和森林漫步的理想選擇。您可以將筆記型電腦（最大 15 吋）放入帶襯墊的隔層中，滿足您的日常所需。</p>
+                </div>
+                <div class="content" data-content="2">
+                    <p>這是規格內容...</p>
+                </div>
+                <div class="content" data-content="3">
+                    <p>評論1: ...</p>
+                    <p>評論2: ...</p>
+                    <p>評論3: ...</p>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <p>📋 常見問題</p>
+                <div class="item">
+                    <div class="question"><span class="arrow">▼</span> 退貨政策？</div>
+                    <div class="answer">支持 7 天無條件退貨</div>
+                </div>
+                <div class="item">
+                    <div class="question"><span class="arrow">▼</span> 運費如何計算？</div>
+                    <div class="answer">50 公里免運費，往後每 10 公里 $0.5</div>
+                </div>
+                <div class="item">
+                    <div class="question"><span class="arrow">▼</span> 保固期多長？</div>
+                    <div class="answer">該產品不設保固期</div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="script.js"></script>
+    </body>
+</html>
