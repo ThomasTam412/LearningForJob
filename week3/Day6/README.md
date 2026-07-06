@@ -20,7 +20,7 @@ Modal	9999
 JavaScript
 
 $(document).on("click", "#xxx", handler);
-//   ↑ 綁在父元素      ↑ 但只對這個目標觸發
+//   ↑ 綁在父元素          ↑ 但只對這個目標觸發
 優點：
 
 對「還沒存在」的元素也有效
