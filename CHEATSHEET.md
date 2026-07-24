@@ -14,7 +14,7 @@
 6. [PRG Pattern (Redirect + Exit)](#prg-pattern-redirect--exit)
 7. [XSS Escape (htmlspecialchars)](#xss-escape-htmlspecialchars)
 8. [OOP Class Template](#oop-class-template)
-
+9. [Repository Pattern](#repository-pattern)
 ---
 
 ## PDO 連線
@@ -317,3 +317,83 @@ foreach ($rows as $row) {
 - DB fetch 出嚟嘅 boolean 係 string `"0"`/`"1"`，要 `(bool)` cast
 - Constructor Property Promotion 只喺 PHP 8+ work
 - 純 PHP file 唔加 `?>` 收尾（防意外 output）
+
+---
+
+## Repository Pattern
+**幾時用：** 想將 DB 操作抽出去，令 UI code 唔關心 SQL
+
+​```php
+<?php
+require_once "Todo.php";
+require_once "TodoList.php";
+
+class TodoRepository {
+    // Dependency Injection：PDO 由外面傳入
+    public function __construct(private PDO $pdo) {}
+    
+    public function findAll(): TodoList {
+        $stmt = $this->pdo->prepare("SELECT id, title, is_done, created_at FROM todos");
+        $stmt->execute();
+        
+        $list = new TodoList();
+        foreach ($stmt->fetchAll() as $row) {
+            $list->add($this->mapRowToTodo($row));
+        }
+        return $list;
+    }
+    
+    public function findById(int $id): ?Todo {
+        $stmt = $this->pdo->prepare("SELECT id, title, is_done, created_at FROM todos WHERE id = ?");
+        $stmt->execute([$id]);
+        $row = $stmt->fetch();
+        return $row ? $this->mapRowToTodo($row) : null;
+    }
+    
+    public function create(string $title): Todo {
+        $stmt = $this->pdo->prepare("INSERT INTO todos (title) VALUES (?)");
+        $stmt->execute([$title]);
+        return $this->findById((int)$this->pdo->lastInsertId());
+    }
+    
+    public function toggle(int $id): void {
+        $stmt = $this->pdo->prepare("UPDATE todos SET is_done = NOT is_done WHERE id = ?");
+        $stmt->execute([$id]);
+    }
+    
+    public function delete(int $id): void {
+        $stmt = $this->pdo->prepare("DELETE FROM todos WHERE id = ?");
+        $stmt->execute([$id]);
+    }
+    
+    // Private helper：row → object 轉換
+    private function mapRowToTodo(array $row): Todo {
+        return new Todo(
+            (int)$row["id"],
+            $row["title"],
+            (bool)$row["is_done"],
+            $row["created_at"],
+        );
+    }
+}
+
+// ---- 用法 ----
+require_once "db.php";
+require_once "TodoRepository.php";
+
+$repo = new TodoRepository($pdo);   // DI：傳 $pdo 入去
+
+$list = $repo->findAll();            // 攞晒
+$todo = $repo->findById(1);          // 攞一個
+$repo->create("Buy milk");           // 新增
+$repo->toggle(1);                    // Toggle
+$repo->delete(1);                    // 刪除
+​```
+
+**常見坑：**
+- Constructor 用 DI（`__construct(PDO $pdo)`），唔好內部 `new PDO()`
+- 加新 column 要**同時**改晒所有 SELECT
+- `create` 內部 call `findById` 攞完整 object（包 `created_at` 等 DB 生成欄位）
+- `toggle`/`delete` 用一句 SQL 就得，唔使 findById 先
+- Repository 只做 data access，唔做 domain logic
+- Row → Object 轉換抽 private method（避免重複）
