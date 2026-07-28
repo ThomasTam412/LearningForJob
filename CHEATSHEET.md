@@ -15,6 +15,9 @@
 7. [XSS Escape (htmlspecialchars)](#xss-escape-htmlspecialchars)
 8. [OOP Class Template](#oop-class-template)
 9. [Repository Pattern](#repository-pattern)
+10. [RepositoryInterface]
+11. [Upsert`save()`]
+12. [Hydration]
 ---
 
 ## PDO 連線
@@ -397,3 +400,141 @@ $repo->delete(1);                    // 刪除
 - `toggle`/`delete` 用一句 SQL 就得，唔使 findById 先
 - Repository 只做 data access，唔做 domain logic
 - Row → Object 轉換抽 private method（避免重複）
+
+--- 
+## RepositoryInterface
+```php
+<?php
+
+interface TodoRepositoryInterface
+{
+    public function findAll(): TodoList;
+    public function findById(int $id): ?Todo;
+    public function save(Todo $todo): void;
+    public function delete(int $id): void;
+}
+```
+### 咩入去、咩唔入去
+
+| | 入 interface？ | 原因 |
+|---|---|---|
+| public 業務 method | ✅ | 對外承諾，任何實作都要有 |
+| `private hydrate()` | ❌ | 實作專屬。PDO 版要 hydrate，JSON 版要 loadFile —— 概念上唔可能寫入同一份合約 |
+| `__construct` | ❌ | `new` 一定要打具體 class 名，發生喺 polymorphism 開始之前 |
+| property | ❌ | 語法唔准（只准 `const`） |
+
+### 命名兩派
+
+```
+A 派（Symfony）：TodoRepositoryInterface  +  TodoRepository
+B 派（Java/.NET）：TodoRepository  +  PdoTodoRepository / JsonTodoRepository
+```
+多過一個實作時，B 派對稱啲。
+
+### 用嘅時候
+
+```php
+// Controller 只認 interface，唔知道有 PDO 呢回事
+public function __construct(
+    private TodoRepositoryInterface $repo
+) {}
+```
+
+換實作只需改 `new` 嗰一行，Controller 一個字唔使動。
+
+---
+
+## Upsert`save()`
+```php
+public function save(Todo $todo): void
+{
+    if ($todo->getId() === null) {
+        $stmt = $this->pdo->prepare("INSERT INTO todos (title) VALUES (?)");
+        $stmt->execute([$todo->getTitle()]);
+        $todo->setId((int) $this->pdo->lastInsertId());   // ← 回填
+        return;                                           // ← early return，唔好 else
+    }
+
+    $stmt = $this->pdo->prepare("UPDATE todos SET title = ?, is_done = ? WHERE id = ?");
+    $stmt->execute([
+        $todo->getTitle(),
+        (int) $todo->isDone(),
+        $todo->getId(),
+    ]);
+}
+```
+
+### ⚠️ 三個坑
+
+**① `lastInsertId()` 回傳 string**
+```php
+$todo->setId((int) $this->pdo->lastInsertId());
+```
+唔 cast，一開 `declare(strict_types=1)` 即刻 TypeError。
+
+**② bool 落 MySQL 要 `(int)`**
+```php
+(int) $todo->isDone()
+```
+PDO 綁值會轉字串，而 `(string) false === ''`（空字串，**唔係 `'0'`**）。
+MySQL STRICT mode 會直接報 `Incorrect integer value: ''`。
+→ 本機寬鬆行到、production 爆炸嘅經典 bug。
+
+**③ 唔好用 `SET is_done = NOT is_done`**
+```php
+// ❌ 破壞 idempotency
+"UPDATE todos SET is_done = NOT is_done WHERE id = ?"
+
+// ✅ 照抄 object 現時狀態
+"UPDATE todos SET title = ?, is_done = ? WHERE id = ?"
+```
+
+### Persist vs Command
+
+| | 思維 | 結果 |
+|---|---|---|
+| Command | 「幫我反轉佢」→ DB 自己計 | save 兩次 = 翻轉兩次 ❌ |
+| **Persist** | 「object 而家係咁，寫落去」 | save 十次結果一樣 ✅ |
+
+`save()` 嘅責任係**把 object 現時狀態寫入 DB**，唔係執行操作。
+狀態改變喺 domain 層做：`$todo->toggle();` 然後 `$repo->save($todo);`
+
+### Idempotency test（每次寫 save/PUT/DELETE 都應該跑）
+
+```php
+$before = $repo->findById($id)->isDone();
+$repo->save($todo);
+$repo->save($todo);
+$repo->save($todo);
+var_dump($before === $repo->findById($id)->isDone());   // 必須 true
+```
+
+--- 
+
+## Hydration
+
+```php
+private function hydrate(array $row): Todo
+{
+    return new Todo(
+        (int) $row["id"],
+        $row["title"],
+        (bool) $row["is_done"],
+        $row["created_at"],
+    );
+}
+```
+
+DB row（array）→ Domain object。
+`findAll()` 同 `findById()` 共用，DRY。**一定係 private**（實作細節）。
+
+配合 guard clause：
+```php
+$row = $stmt->fetch();
+if ($row === false) {
+    return null;
+}
+return $this->hydrate($row);
+```
+
+---
