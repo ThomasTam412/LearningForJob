@@ -18,6 +18,8 @@
 10. [RepositoryInterface]
 11. [Upsert`save()`]
 12. [Hydration]
+13. [Autoloading]
+
 ---
 
 ## PDO 連線
@@ -538,3 +540,151 @@ return $this->hydrate($row);
 ```
 
 ---
+
+## Autoloading
+### 完整寫法
+
+```php
+<?php
+// autoload.php — 放喺 project 根目錄
+
+spl_autoload_register(function (string $class) {
+    $file = __DIR__ . "/" . $class . ".php";
+
+    if (file_exists($file)) {
+        require $file;
+    }
+});
+```
+
+### 用法
+
+```php
+// 入口檔（index.php / test.php / 任何 entry point）
+require __DIR__ . '/autoload.php';
+
+// 之後直接用，唔使 require 任何 class
+$repo = new TodoRepository($pdo);
+```
+
+---
+
+### ⚠️ 三條硬規則
+
+**① 檔名必須 = class 名**
+```
+class Todo                         → Todo.php
+interface TodoRepositoryInterface  → TodoRepositoryInterface.php
+```
+autoloader 就係靠呢個約定推算路徑。大小寫都要一致（Linux 分大小寫，Windows 唔分 → 本機行到、上 server 爆）。
+
+**② 一定要 `__DIR__`，唔准用相對路徑**
+```php
+require "Todo.php";              // ❌ 相對於「執行入口」
+require __DIR__ . "/Todo.php";   // ✅ 相對於「呢個檔案自己」
+```
+驗證：`cd .. && php Day2/test.php` —— 相對路徑會爆。
+
+**③ 搵唔到要靜靜 return，唔好 error**
+```php
+if (file_exists($file)) {        // ← 冇呢個 guard 就出事
+    require $file;
+}
+```
+原因：
+- 錯誤訊息會變成「檔案唔存在」而唔係「class 唔存在」（誤導）
+- PHP 會逐個試登記咗嘅 autoloader。你一 fatal error，**後面嘅冇機會試** → Composer 第三方 library 全部載唔到
+
+---
+
+### 其他檔案唔准再有 `require`
+
+```php
+// TodoList.php 頂部
+require_once "Todo.php";    // ❌ 刪咗佢
+```
+
+三個理由：
+1. **Single Source of Truth** — 兩套載入機制並存，問「呢個 class 邊度載」答唔到
+2. **失去 lazy loading** — 用 TodoList 就強制拉埋 Todo，就算冇用到
+3. **相對路徑計時炸彈** — 換個目錄跑就爆
+
+**載入呢件事，只由 autoloader 一處負責。**
+
+---
+
+### `require` vs `require_once`
+
+Autoloader 入面**兩個都得**（同一 class 唔會 call 兩次）。
+慣例寫 `require` —— `_once` 要維護已載入清單，喺呢個場景係多餘 overhead。
+
+---
+
+### PHP 搵 class 嘅流程
+
+```
+new Todo(...)
+   ↓
+1. Todo 載咗未？ → 載咗 → 用
+   ↓ 未載
+2. 唔即刻 error，call 登記咗嘅 autoloader（可以有多個，逐個試）
+   ↓
+3. 有人成功 require → 當冇事，繼續行
+   全部搵唔到 → Fatal error: Class "Todo" not found
+```
+
+---
+
+### 同 Composer 嘅關係
+
+```php
+require __DIR__ . '/vendor/autoload.php';   // Laravel 每個 project 都有呢行
+```
+
+本質同你五行一樣，**分別只在「class 名 → 路徑」嘅推算規則：**
+
+| | 規則 | 例 |
+|---|---|---|
+| 手寫版 | 加 `.php` | `Todo` → `Todo.php` |
+| **PSR-4** | namespace 對應資料夾 | `App\Models\Todo` → `app/Models/Todo.php` |
+
+---
+
+### PSR-4 版本（Day 4 之後用呢個）
+
+```php
+spl_autoload_register(function (string $class) {
+    $prefix = 'App\\';
+    $baseDir = __DIR__ . '/app/';
+
+    // 唔係 App\ 開頭就唔關我事，交畀下一個 autoloader
+    if (strncmp($prefix, $class, strlen($prefix)) !== 0) {
+        return;
+    }
+
+    $relative = substr($class, strlen($prefix));
+    $file = $baseDir . str_replace('\\', '/', $relative) . '.php';
+
+    if (file_exists($file)) {
+        require $file;
+    }
+});
+```
+
+`App\Models\Todo` → `app/Models/Todo.php`
+
+---
+
+### 📌 Debug：`Class "Xxx" not found` 查五樣
+
+1. 檔名同 class 名一模一樣？（**連大小寫**）
+2. 檔案喺 autoloader 搵嘅資料夾入面？
+3. 入口檔有冇 `require autoload.php`？
+4. 有 namespace 嘅話，namespace 有冇對應資料夾結構？
+5. 檔案入面真係有 `class Xxx`？（打錯字 / 漏咗 `class` 關鍵字）
+
+**Debug 技巧：** 喺 autoloader 入面加一行睇 PHP 搵緊咩
+```php
+echo "載入緊：$class → $file\n";
+```
+
