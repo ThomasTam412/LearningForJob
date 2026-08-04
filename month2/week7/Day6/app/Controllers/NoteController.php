@@ -58,7 +58,9 @@ class NoteController
     {
         $id = (int) ($_POST["id"] ?? 0);
         $note = $this->repo->findById($id);
-        if (!$note) {
+        if ($note === null) {
+            http_response_code(404);
+            echo "Note not found";
             return;
         }
         $note->toggle();
